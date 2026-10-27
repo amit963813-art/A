@@ -28,8 +28,7 @@ jobs:
           printf "\n84831b9409646a918e30573bab4c9c91346d8abd\n504667f4c0de7af1a06de9f4b1727b84351f2910\n" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
           yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
           yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "platforms;android-36" "build-tools;36.0.0" || true
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "platforms;android-36.1" || true
-          if [ ! -d "$ANDROID_HOME/platforms/android-36.1" ] && [ -f app/build.gradle.kts ]; then
+          if [ -f app/build.gradle.kts ]; then
             sed -i 's/compileSdk { version = release(36) { minorApiLevel = 1 } }/compileSdk = 36/g' app/build.gradle.kts
           fi
 
@@ -46,58 +45,48 @@ jobs:
             -keyalg RSA -keysize 2048 -validity 10000 \
             -storepass android -keypass android \
             -dname "CN=Android Debug,O=Android,C=US"
-          if [ ! -f app/google-services.json ] || ! grep -q "com.aistudio.aiassistant.vkrpqm" app/google-services.json; then
-            printf '%s\n' \
-              '{' \
-              '  "project_info": {' \
-              '    "project_number": "913273150621",' \
-              '    "project_id": "gen-lang-client-0505500826",' \
-              '    "storage_bucket": "gen-lang-client-0505500826.firebasestorage.app"' \
-              '  },' \
-              '  "client": [' \
-              '    {' \
-              '      "client_info": {' \
-              '        "mobilesdk_app_id": "1:913273150621:android:dbc8ec285aa38ce2298874",' \
-              '        "android_client_info": { "package_name": "com.aistudio.aiassistant.vkrpqm" }' \
-              '      },' \
-              '      "oauth_client": [],' \
-              '      "api_key": [{ "current_key": "AIzaSyCTwP7kYRuGCyyQCTmwDHRGeGQB6nh_M2c" }],' \
-              '      "services": { "appinvite_service": { "other_platform_oauth_client": [] } }' \
-              '    },' \
-              '    {' \
-              '      "client_info": {' \
-              '        "mobilesdk_app_id": "1:913273150621:android:db16147d0c4b4a26298874",' \
-              '        "android_client_info": { "package_name": "com.aistudio.kayraai.vpxkqm" }' \
-              '      },' \
-              '      "oauth_client": [],' \
-              '      "api_key": [{ "current_key": "AIzaSyCTwP7kYRuGCyyQCTmwDHRGeGQB6nh_M2c" }],' \
-              '      "services": { "appinvite_service": { "other_platform_oauth_client": [] } }' \
-              '    },' \
-              '    {' \
-              '      "client_info": {' \
-              '        "mobilesdk_app_id": "1:913273150621:android:dbc8ec285aa38ce2298874",' \
-              '        "android_client_info": { "package_name": "com.example" }' \
-              '      },' \
-              '      "oauth_client": [],' \
-              '      "api_key": [{ "current_key": "AIzaSyCTwP7kYRuGCyyQCTmwDHRGeGQB6nh_M2c" }],' \
-              '      "services": { "appinvite_service": { "other_platform_oauth_client": [] } }' \
-              '    }' \
-              '  ],' \
-              '  "configuration_version": "1"' \
-              '}' > app/google-services.json
-          fi
+          APP_ID=$(grep -oP 'applicationId\s*=\s*"\K[^"]+' app/build.gradle.kts 2>/dev/null || echo "com.aistudio.aiassistant.vkrpqm")
+          printf '%s\n' \
+            '{' \
+            '  "project_info": {' \
+            '    "project_number": "913273150621",' \
+            '    "project_id": "gen-lang-client-0505500826",' \
+            '    "storage_bucket": "gen-lang-client-0505500826.firebasestorage.app"' \
+            '  },' \
+            '  "client": [' \
+            '    {' \
+            '      "client_info": {' \
+            '        "mobilesdk_app_id": "1:913273150621:android:dbc8ec285aa38ce2298874",' \
+            "        \"android_client_info\": { \"package_name\": \"$APP_ID\" }" \
+            '      },' \
+            '      "oauth_client": [],' \
+            '      "api_key": [{ "current_key": "AIzaSyCTwP7kYRuGCyyQCTmwDHRGeGQB6nh_M2c" }],' \
+            '      "services": { "appinvite_service": { "other_platform_oauth_client": [] } }' \
+            '    },' \
+            '    {' \
+            '      "client_info": {' \
+            '        "mobilesdk_app_id": "1:913273150621:android:db16147d0c4b4a26298874",' \
+            '        "android_client_info": { "package_name": "com.example" }' \
+            '      },' \
+            '      "oauth_client": [],' \
+            '      "api_key": [{ "current_key": "AIzaSyCTwP7kYRuGCyyQCTmwDHRGeGQB6nh_M2c" }],' \
+            '      "services": { "appinvite_service": { "other_platform_oauth_client": [] } }' \
+            '    }' \
+            '  ],' \
+            '  "configuration_version": "1"' \
+            '}' > app/google-services.json
 
       - name: Set up Gradle 9.3.1
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: wrapper
+          gradle-version: '9.3.1'
 
       - name: Build Debug APK
         run: |
           set -o pipefail
           gradle :app:assembleDebug --no-daemon --no-configuration-cache -Djava.awt.headless=true --console=plain 2>&1 | tee build_output.log || {
             echo "========== ACTUAL BUILD ERROR SUMMARY =========="
-            grep -E "What went wrong:|Execution failed for task|^> |^e: |Exception:" -A 8 build_output.log | tail -n 80
+            grep -E "What went wrong:|Execution failed for task|^> |^e: |Exception:|Caused by:" -A 5 build_output.log | tail -n 80
             exit 1
           }
 
