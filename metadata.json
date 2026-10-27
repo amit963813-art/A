@@ -1,0 +1,6 @@
+{
+  "name": "Personal AI Assistant",
+  "description": "Customizable Hindi & Hinglish AI voice assistant with phone commands, memory vault, biometric security, and PagarBook attendance & salary tracker.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

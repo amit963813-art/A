@@ -1,0 +1,50 @@
+package com.example.ui.theme
+
+import androidx.compose.ui.graphics.Color
+
+// Cyber Indigo Dark Theme Palette
+val CyberBackground = Color(0xFF0B0F19)
+val CyberSurface = Color(0xFF131A2A)
+val CyberSurfaceVariant = Color(0xFF1E293B)
+val CyberPrimary = Color(0xFF6366F1)
+val CyberOnPrimary = Color(0xFFFFFFFF)
+val CyberPrimaryContainer = Color(0xFF312E81)
+val CyberOnPrimaryContainer = Color(0xFFE0E7FF)
+val CyberSecondary = Color(0xFFF59E0B)
+val CyberOnSecondary = Color(0xFF1E1B4B)
+val CyberSecondaryContainer = Color(0xFF451A03)
+val CyberOnSecondaryContainer = Color(0xFFFEF3C7)
+val CyberTertiary = Color(0xFF10B981)
+val CyberOnTertiary = Color(0xFF052E16)
+val CyberTextPrimary = Color(0xFFF8FAFC)
+val CyberTextSecondary = Color(0xFF94A3B8)
+
+// Saffron Obsidian High-Contrast Palette
+val SaffronBackground = Color(0xFF0F0D0A)
+val SaffronSurface = Color(0xFF1C1712)
+val SaffronSurfaceVariant = Color(0xFF2B231B)
+val SaffronPrimary = Color(0xFFF59E0B)
+val SaffronOnPrimary = Color(0xFF1C1300)
+val SaffronPrimaryContainer = Color(0xFF5C3703)
+val SaffronOnPrimaryContainer = Color(0xFFFFEDD5)
+val SaffronSecondary = Color(0xFF38BDF8)
+val SaffronOnSecondary = Color(0xFF082F49)
+val SaffronSecondaryContainer = Color(0xFF0C4A6E)
+val SaffronOnSecondaryContainer = Color(0xFFE0F2FE)
+val SaffronTertiary = Color(0xFF34D399)
+
+// Daylight Studio Light Palette
+val DaylightBackground = Color(0xFFF8FAFC)
+val DaylightSurface = Color(0xFFFFFFFF)
+val DaylightSurfaceVariant = Color(0xFFE2E8F0)
+val DaylightPrimary = Color(0xFF4F46E5)
+val DaylightOnPrimary = Color(0xFFFFFFFF)
+val DaylightPrimaryContainer = Color(0xFFE0E7FF)
+val DaylightOnPrimaryContainer = Color(0xFF1E1B4B)
+val DaylightSecondary = Color(0xFFD97706)
+val DaylightOnSecondary = Color(0xFFFFFFFF)
+val DaylightSecondaryContainer = Color(0xFFFEF3C7)
+val DaylightOnSecondaryContainer = Color(0xFF451A03)
+val DaylightTertiary = Color(0xFF059669)
+val DaylightTextPrimary = Color(0xFF0F172A)
+val DaylightTextSecondary = Color(0xFF475569)

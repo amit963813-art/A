@@ -1,0 +1,6 @@
+{
+  "summary":  "Comprehensive implementation plan for the native Android Personal AI Assistant app covering project saving/export, customizable Hindi/Hinglish assistant identity, Firebase AI Logic + offline command engine, wake-phrase foreground service & lock-screen trigger, custom voice commands, AndroidX Biometric authentication, personal memory vault, and the PagarBook-inspired Attendance & Salary module.",
+  "updatedAt":  "2026-10-27T12:00:29.176474426Z",
+  "requestFeedback":  true,
+  "userFacing":  true
+}

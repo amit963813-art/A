@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Personal AI Assistant</string>
+    <string name="notification_channel_name">Lock-Screen Assistant</string>
+    <string name="notification_channel_desc">Persistent notification to activate your personal AI assistant from the lock screen</string>
+    <string name="talk_to_assistant">Talk to Assistant</string>
+    <string name="stop_listening">Stop Listening</string>
+</resources>
