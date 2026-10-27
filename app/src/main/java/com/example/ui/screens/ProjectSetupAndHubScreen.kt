@@ -340,14 +340,14 @@ fun GitHubAndProjectSaveSection(
     onVerifyAndGenerateZip: () -> Unit
 ) {
     val context = LocalContext.current
+    val clipboardManager = androidx.compose.ui.platform.LocalClipboardManager.current
     var githubUsernameInput by remember {
-        mutableStateOf(
-            githubRepoInput.substringBefore("/", "").ifBlank { "amit963813" }
-        )
+        mutableStateOf(githubRepoInput.substringBefore("/", ""))
     }
     var newRepoNameInput by remember { mutableStateOf("my-personal-ai-assistant") }
     var preferPrivateRepo by remember { mutableStateOf(true) }
     var zipSaveStatus by remember { mutableStateOf<String?>(null) }
+    var showStepByStepHindiGuide by remember { mutableStateOf(true) }
 
     val saveZipLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.CreateDocument("application/zip")
@@ -359,7 +359,7 @@ fun GitHubAndProjectSaveSection(
                         input.copyTo(out)
                     }
                 }
-                zipSaveStatus = "Complete Source ZIP saved (${verifiedZipInfo.sizeBytes / 1024} KB) to your phone!"
+                zipSaveStatus = "Complete Source ZIP saved (${verifiedZipInfo.sizeBytes / 1024} KB)!"
             } catch (e: Exception) {
                 zipSaveStatus = "Save error: ${e.localizedMessage}"
             }
@@ -368,10 +368,53 @@ fun GitHubAndProjectSaveSection(
 
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text(
-            text = "STEP 1: How Do You Want to Save Your Project?",
+            text = "STEP 1: Project Save, GitHub & APK Guide (Hindi/English)",
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.primary
         )
+
+        // IMPORTANT HINDI / HINGLISH EXPLANATION CARD FOR MOBILE USERS
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
+        ) {
+            Column(
+                modifier = Modifier.padding(14.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Zaroori Jankari: GitHub & APK Kaise Download Karein?",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                    AssistChip(
+                        onClick = { showStepByStepHindiGuide = !showStepByStepHindiGuide },
+                        label = { Text(if (showStepByStepHindiGuide) "Hide" else "Show Details") }
+                    )
+                }
+
+                if (showStepByStepHindiGuide) {
+                    Text(
+                        text = "Aap abhi yeh app ek **Cloud Android Emulator (Preview Phone)** ke andar dekh rahe hain. Apne asli phone mein APK, ZIP, ya GitHub connect karne ke 2 tarike hain:\n\n" +
+                            "1. **Asli Phone mein APK / ZIP / GitHub Push (Sabse Aasan)**:\n" +
+                            "   • Emulator phone screen ke **BAHAR sabse upar** (AI Studio ke top bar mein jahan **Settings ⚙️ / Export / GitHub** icon hai) tap karein.\n" +
+                            "   • Wahan se **Push to GitHub** dabayein (official GitHub OAuth login khulega aur poora code aapke GitHub par save ho jayega).\n" +
+                            "   • Wahin se **Download ZIP** ya **Generate APK** dabayein taaki file seedha aapke asli phone ke Downloads folder mein aa jaye.\n\n" +
+                            "2. **Is Preview App ke Andar se GitHub Check & Backup**:\n" +
+                            "   • Neeche diye gaye buttons se aap Emulator ke browser mein GitHub repo bana sakte hain, apna GitHub username daal kar repos check kar sakte hain, ya JSON backup copy kar sakte hain.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                }
+            }
+        }
 
         // OPTION 1: CONNECT GITHUB
         SaveOptionCard(
